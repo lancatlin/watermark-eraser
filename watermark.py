@@ -121,9 +121,6 @@ class Watermark:
         print(bg_colors)
         result = self.img.copy()
 
-        watermark_mask = self.watermark_mask()
-        display(watermark_mask)
-
         for i in range(len(mixed_colors)):
             # 計算範圍上下界
             bias = np.sqrt(mixed_var[i]) * 3
@@ -138,7 +135,6 @@ class Watermark:
             # Dialate the image to fill the holes
             kernel = np.ones((3, 3), np.uint8)
             filtered_img = cv2.dilate(filtered_img, kernel, iterations=1)
-            filtered_img *= watermark_mask
 
 
             mask = self.img.copy()
@@ -151,10 +147,6 @@ class Watermark:
             result[filtered_img > 0] = G
         return result.astype(np.uint8)
 
-
-    def watermark_mask(self):
-        return np.ones(self.img.shape[:2], np.uint8)
-        # return cv2.dilate(self.watermark_edge.astype(np.uint8), np.ones((5, 5)), iterations=5)
 
     def load(self, filename):
         self.df = pd.read_csv(filename, converters={'mixed': parse_array, 'backgrond': parse_array, 'foreground': parse_array})
