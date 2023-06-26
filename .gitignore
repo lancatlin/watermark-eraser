@@ -1,0 +1,11 @@
+.ipynb_checkpoints
+*_files
+*.aux
+*.log
+*.out
+outputs
+.venv
+__pycache__
+*.npy
+*.npc
+final/watermark.csv
