@@ -8,4 +8,5 @@ outputs
 __pycache__
 *.npy
 *.npc
-final/watermark.csv
+*.csv
+slide

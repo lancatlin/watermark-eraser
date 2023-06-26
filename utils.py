@@ -10,6 +10,7 @@ figure_count = 1
 
 
 def display(*imgs, cmap="gray", axis=False, colorbar=False, title="", **kwargs):
+    """Display images helper function"""
     global figure_count
     for i, img in enumerate(imgs):
         # Check if the image is in BGR format, convert it to RGB
@@ -22,15 +23,15 @@ def display(*imgs, cmap="gray", axis=False, colorbar=False, title="", **kwargs):
         if title:
             plt.title(title)
         plt.axis(axis)
-        try:
-            plt.savefig(
-                f"doc/fruits/fruits-{figure_count}.jpg",
-                bbox_inches="tight",
-                pad_inches=0,
-                dpi=300,
-            )
-        except Exception as e:
-            print(e)
+        # try:
+        #     plt.savefig(
+        #         f"doc/fruits/fruits-{figure_count}.jpg",
+        #         bbox_inches="tight",
+        #         pad_inches=0,
+        #         dpi=300,
+        #     )
+        # except Exception as e:
+        #     print(e)
         figure_count += 1
 
 
