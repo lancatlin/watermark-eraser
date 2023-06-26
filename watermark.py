@@ -7,7 +7,7 @@ import pandas as pd
 from utils import display, canny, timeit, key, quantize, parse_array
 from plot import plot_3d
 from cluster import ColorCluster
-from kuwahara import kuwahara_color, BASENAME
+from kuwahara import kuwahara_color
 
 
 BLUR_EDGE_SIZE = 5
@@ -16,6 +16,11 @@ VARIANCE_THRESHOLD = 100
 
 def is_white(mask):
     return np.var(mask) < VARIANCE_THRESHOLD
+
+
+def mask_color(mixed, original, alpha):
+    """Calculate the color of the mask."""
+    return (mixed - original) / alpha + original
 
 
 def mark_direction(edge):
@@ -143,7 +148,7 @@ class Watermark:
 
     def mask_color(self, mixed, original):
         """Calculate the color of the mask."""
-        return (mixed - original) / self.alpha + original
+        return mask_color(mixed, original, self.alpha)
 
     def add_data(self, mixed, background, foreground):
         k = key(mixed, background)

@@ -6,9 +6,6 @@ from utils import timeit, display, canny
 from functools import wraps
 
 
-BASENAME = ""
-
-
 def cache_file(func):
     @wraps(func)
     def cache_file_wrapper(*args, **kwargs):
