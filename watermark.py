@@ -40,10 +40,10 @@ def mark_direction(edge):
 class Watermark:
     def __init__(self, img):
         self.img = img
-        self.df = pd.DataFrame(columns=['mixed', 'background', 'foreground', 'count'],)
+        self.df = pd.DataFrame(
+            columns=['mixed', 'background', 'foreground', 'count'],)
 
         print(self.df)
-
 
         self.blurred = kuwahara_color(self.img, 5)
         display(self.blurred)
@@ -56,7 +56,6 @@ class Watermark:
 
         self.watermark_edge = None
 
-
     def is_watermark(self, i, j, bs):
         a = self.blurred[i+bs[0], j+bs[1]]
         b = self.blurred[i-bs[0], j-bs[1]]
@@ -66,7 +65,6 @@ class Watermark:
             return True
         else:
             return self.is_watermark_impl(a, b)
-
 
     def is_watermark_impl(self, a, b):
         mask_1 = mask_color(a, b)
@@ -80,7 +78,6 @@ class Watermark:
 
         return False
 
-    
     def add_data(self, mixed, background, foreground):
         k = key(mixed, background)
         self.df.loc[k] = {
@@ -89,7 +86,6 @@ class Watermark:
             'foreground': foreground,
             'count': 1,
         }
-            
 
     @timeit
     def find_watermark(self, alpha=0.5, bs=5):
@@ -111,7 +107,6 @@ class Watermark:
         self.watermark_edge = output
         return output
 
-    
     def remove_watermark(self):
         cluster = ColorCluster(self.df)
         cluster.cluster('mixed')
@@ -140,7 +135,6 @@ class Watermark:
             filtered_img = cv2.dilate(filtered_img, kernel, iterations=1)
             filtered_img *= watermark_mask
 
-
             mask = self.img.copy()
             mask[filtered_img == 0] = 0
             display(mask)
@@ -151,16 +145,17 @@ class Watermark:
             result[filtered_img > 0] = G
         return result.astype(np.uint8)
 
-
     def watermark_mask(self):
         return np.ones(self.img.shape[:2], np.uint8)
         # return cv2.dilate(self.watermark_edge.astype(np.uint8), np.ones((5, 5)), iterations=5)
 
     def load(self, filename):
-        self.df = pd.read_csv(filename, converters={'mixed': parse_array, 'backgrond': parse_array, 'foreground': parse_array})
+        self.df = pd.read_csv(filename, converters={
+                              'mixed': parse_array, 'backgrond': parse_array, 'foreground': parse_array})
 
     def save(self, filename):
         self.df.to_csv(filename)
+
 
 if __name__ == "__main__":
     # Read filename from command arguments
